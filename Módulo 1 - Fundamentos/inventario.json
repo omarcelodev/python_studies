@@ -1,0 +1,12 @@
+[
+    {
+        "nome": "espada longa",
+        "tipo": "armas",
+        "quantidade": 4
+    },
+    {
+        "nome": "poçao de cura",
+        "tipo": "pocoes_consumiveis",
+        "quantidade": 1
+    }
+]

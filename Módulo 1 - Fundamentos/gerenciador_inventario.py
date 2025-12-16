@@ -1,3 +1,5 @@
+import json
+
 #Gerenciador de Inventário de RPG
 itens = {
     "armas": [
@@ -93,13 +95,17 @@ itens = {
     ]
 }
 
-inventario = [
-    {"nome": "poçao de cura", "tipo": "pocoes_consumiveis", "quantidade": 3},
-    {"nome": "poçao de mana", "tipo": "pocoes_consumiveis", "quantidade": 2},
-    {"nome": "espada longa", "tipo": "arma", "quantidade": 1},
-    {"nome": "malha", "tipo": "armadura", "quantidade": 1},
-    {"nome": "moedas de ouro", "tipo": "utilidades", "quantidade": 50},
-]
+inventario = []
+
+def load__inventory():
+    global inventario
+    try:
+        with open("inventario.json", "r", encoding="utf-8") as arquivo:
+            inventario = json.load(arquivo)
+    except FileNotFoundError:
+        inventario = []
+
+load__inventory()
 
 #Adiciona a categoria do item automaticamente e verifica se o item está na lista de itens do jogo
 def category_itens(name_item):
@@ -125,16 +131,20 @@ def qntd_itens(name_item):
         qntd_item = int(input("Digite a quantidade do item que deseja adicionar: "))
         qntd_atual = check_qntd_atual(name_item)
 
+        #Verifica se o inventário já está cheio
         if qntd_atual >= MAX:
             print(f"Seu inventário já atingiu o máximo de 50 {name_item}.\n")
             return 0
         
+        #Trata se a quantidade é válida
         if qntd_item < 1:
             print("Quantidade inválida!\n")
             continue
         
+        #Calcula o espaço livre no inventário
         free_space = MAX - qntd_atual
 
+        #Caso a quantidade de item adicionado seja maio que o espaço livre o programa so adiciona quanto cabe
         if qntd_item > free_space:
             print(f"Só há espaço para {free_space} {name_item}.")
             print(f"Foram adicionado(s) {free_space} {name_item}.")
@@ -147,8 +157,7 @@ def add_item():
     print("\n===ADIÇÃO DE ITENS===")
 
     while True:
-        name_item = input("Digite o nome do item que deseja adicionar: "
-                          "Digite 0 para voltar ao menu").strip().lower()
+        name_item = input("Digite o nome do item que deseja adicionar: ").strip().lower()
         if category_itens(name_item) != None:
             break
     
@@ -182,8 +191,66 @@ def add_item():
 
     inventario.append(new_item)
 
-    print(inventario)
-    
+#Remove Itens do inventário    
+def remove_item():
+    print("\n===REMOÇÃO DE ITENS===")
+
+    name_item = input("Digite o nome do item que deseja remover: ").strip().lower()
+
+    for item in inventario:
+        if item["nome"].lower() == name_item:
+            
+            while True:
+                qntd_itens = int(input("Digite a quantidade que deseja remover: "))
+
+                if qntd_itens < 1:
+                    print("Quantidade Inválida!\n")
+                else:
+                    break
+            
+            item["quantidade"] -= qntd_itens
+
+            if item["quantidade"] <= 0:
+                inventario.remove(item)
+                print(f"{item['nome']} foi removido do inventário.\n")
+            else:
+                print(f"Agora você tem {item['quantidade']} {item['nome']}\n")
+            
+            return
+
+    else:
+        print("Esse item não existe no seu inventário!\n")
+
+#Consulta itens do jogo
+def consult_item():
+    print("\n===CONSULTAR ITENS===")
+
+    type_item = input("Digite o tipo de item que deseja buscar: ").strip().lower()
+
+    for categoria in itens:
+        if type_item == categoria:
+            print(itens[type_item])
+            break
+    else:
+        print("Categoria não encontrada!\n")
+
+#Resumo do inventário com total de itens diferentes, total geral de unidades, lista dos tipos existentes
+def resume_iventory():
+    print("\n===RESUMO INVENTÁRIO===\n")
+
+    if not inventario:
+        print("Inventário vazio.")
+    else:
+        for item in inventario:
+            print(f"Item: {item['nome']}")
+            print(f"Tipo: {item['tipo']}")
+            print(f"Quantidade: {item['quantidade']}")
+            print("-" * 25)
+
+def save_inventory():
+    with open("inventario.json", "w", encoding="utf-8") as arquivo:
+        json.dump(inventario, arquivo, ensure_ascii=False, indent=4)
+
 #Menu de Interação
 def menu():
     while True:
@@ -199,13 +266,13 @@ def menu():
         if opcao == 1:
             add_item()
         elif opcao == 2:
-            print("Função")
+            remove_item()
         elif opcao == 3:
-            print("Função")
+            consult_item()
         elif opcao == 4:
-            print("Função")
+            resume_iventory()
         elif opcao == 5:
-            print("Função")
+            save_inventory()
         elif opcao == 0:
             break
         else:
