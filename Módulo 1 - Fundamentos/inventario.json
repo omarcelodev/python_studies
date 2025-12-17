@@ -7,6 +7,16 @@
     {
         "nome": "poçao de cura",
         "tipo": "pocoes_consumiveis",
-        "quantidade": 1
+        "quantidade": 6
+    },
+    {
+        "nome": "adaga",
+        "tipo": "armas",
+        "quantidade": 10
+    },
+    {
+        "nome": "corda",
+        "tipo": "utilidades",
+        "quantidade": 50
     }
 ]

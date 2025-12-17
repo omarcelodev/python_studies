@@ -1,6 +1,10 @@
-import json
-
 #Gerenciador de Inventário de RPG
+
+#Biblioteca para permitir o salvamento do inventário
+import json
+import os
+
+#Itens do jogo
 itens = {
     "armas": [
         "espada longa",
@@ -95,8 +99,20 @@ itens = {
     ]
 }
 
+#Inventário do jogo
 inventario = []
 
+def header(titulo):
+    print(f"==={titulo}===\n")
+
+#Limpa a tela do terminal
+def clear():
+    os.system('cls' if os.name == 'nt' else clear)
+
+def pause(msg = "Pressione ENTER para continuar..."):
+    input(msg)
+
+#Carrega inventário salvo em execuções passadas
 def load__inventory():
     global inventario
     try:
@@ -104,7 +120,6 @@ def load__inventory():
             inventario = json.load(arquivo)
     except FileNotFoundError:
         inventario = []
-
 load__inventory()
 
 #Adiciona a categoria do item automaticamente e verifica se o item está na lista de itens do jogo
@@ -113,32 +128,39 @@ def category_itens(name_item):
         if name_item in lista:
             return categoria
                 
-    print("Esse item não existe no jogo.\n")
+    print("\nEsse item não existe no jogo.")
+    input("Pressione ENTER para continuar...")
     return None
 
-#Checa quanto do item já existe no inventário
+#Checa a quantidade do item que já existe no inventário
 def check_qntd_atual(name_item):
     for item in inventario:
         if item["nome"].lower() == name_item:
             return item["quantidade"]
     return 0
 
-#Captura a quantidade de itens
+#Captura a quantidade de itens que o usuário digitar para adicionar ao inventário
 def qntd_itens(name_item):
     MAX = 50
 
     while True:
-        qntd_item = int(input("Digite a quantidade do item que deseja adicionar: "))
+        clear()
+        header("ADIÇÃO DE ITENS")
+        print(f"Item selecionado: {name_item}")
+        print(f"Tipo de item: {category_itens(name_item)}")
+        qntd_item = int(input("Quantidade: "))
         qntd_atual = check_qntd_atual(name_item)
 
         #Verifica se o inventário já está cheio
         if qntd_atual >= MAX:
             print(f"Seu inventário já atingiu o máximo de 50 {name_item}.\n")
+            input("\nPressione ENTER para continuar...")
             return 0
         
         #Trata se a quantidade é válida
         if qntd_item < 1:
             print("Quantidade inválida!\n")
+            input("Pressione ENTER para continuar...")
             continue
         
         #Calcula o espaço livre no inventário
@@ -148,20 +170,28 @@ def qntd_itens(name_item):
         if qntd_item > free_space:
             print(f"Só há espaço para {free_space} {name_item}.")
             print(f"Foram adicionado(s) {free_space} {name_item}.")
+            input("\nPressione ENTER para continuar...")
             return free_space
+        
+        else:
+            print(f"Foram adicionado(s) {qntd_item} {name_item} no invenetário.")
+            input("\nPressione ENTER para continuar...")
         
         return qntd_item
     
 #Adiciona Itens no inventário
 def add_item():
-    print("\n===ADIÇÃO DE ITENS===")
+    
 
     while True:
+        clear()
+        header("ADIÇÃO DE ITENS")
+
         name_item = input("Digite o nome do item que deseja adicionar: ").strip().lower()
         if category_itens(name_item) != None:
             break
     
-    #Adiciona quantidade de um item já existente
+    #Adiciona a quantidade de um item já existente no inventário
     for item in inventario:
         if item["nome"].lower() == name_item:
             print("\nEsse item já está no seu iventário.")
@@ -182,7 +212,7 @@ def add_item():
     #Adiciona a quantidade de itens desejada
     qntd_item = qntd_itens(name_item)
 
-    #Adiciona o novo item ao inventário
+    #Adiciona um novo item ao inventário
     new_item = {
         "nome": name_item, 
         "tipo": type_item, 
@@ -199,7 +229,6 @@ def remove_item():
 
     for item in inventario:
         if item["nome"].lower() == name_item:
-            
             while True:
                 qntd_itens = int(input("Digite a quantidade que deseja remover: "))
 
@@ -247,6 +276,7 @@ def resume_iventory():
             print(f"Quantidade: {item['quantidade']}")
             print("-" * 25)
 
+#Salva o inventário
 def save_inventory():
     with open("inventario.json", "w", encoding="utf-8") as arquivo:
         json.dump(inventario, arquivo, ensure_ascii=False, indent=4)
@@ -254,6 +284,7 @@ def save_inventory():
 #Menu de Interação
 def menu():
     while True:
+        clear()
         print("=== INVENTARIO ===")
         print("(1) Adicionar Item")
         print("(2) Remover Item ")
@@ -264,18 +295,24 @@ def menu():
         opcao = int(input("Sua opção: "))
 
         if opcao == 1:
+            clear()
             add_item()
         elif opcao == 2:
+            clear()
             remove_item()
         elif opcao == 3:
+            clear()
             consult_item()
         elif opcao == 4:
+            clear()
             resume_iventory()
         elif opcao == 5:
+            clear()
             save_inventory()
         elif opcao == 0:
             break
         else:
-            print("Opção Inválidada! Tente Novamente.")
+            print("Opção Inválidada! Tente Novamente.\n")
+            input("Pressione ENTER para continuar...")
 
 menu()
