@@ -257,7 +257,7 @@ def remove_item():
                     pause()
                 else:
                     print(f"-{qntd_itens} {name_item} removid@(s) do inventário")
-                    print(f"{item['quantidade']} {item['nome']} restantes")
+                    print(f"{item['quantidade']} {item['nome']} restantes\n")
                     pause()
 
                 return
@@ -267,18 +267,28 @@ def remove_item():
             pause()
             continue
 
+#Imprime Lista de Itens do jogo
+def print_category(itens, categoria):
+    print(f"\n=== {categoria.upper()} ===")
+
+    for i, item in enumerate(itens[categoria], start=1):
+        print(f"{i:02d} - {item.capitalize()}")
+
 #Consulta itens do jogo
 def consult_item():
-    print("\n===CONSULTAR ITENS===")
+    while True:
+        clear()
+        header("CONSULTAR ITENS")
 
-    type_item = input("Digite o tipo de item que deseja buscar: ").strip().lower()
+        type_item = input("Digite a categoria do item que deseja buscar: ").strip().lower()
 
-    for categoria in itens:
-        if type_item == categoria:
-            print(itens[type_item])
-            break
-    else:
-        print("Categoria não encontrada!\n")
+        if type_item in itens:
+            print_category(itens, type_item)
+            pause()
+            return
+        else:
+            print("Categoria não encontrada!\n")
+            pause()
 
 #Resumo do inventário com total de itens diferentes, total geral de unidades, lista dos tipos existentes
 def resume_iventory():
