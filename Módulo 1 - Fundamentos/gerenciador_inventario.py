@@ -292,21 +292,31 @@ def consult_item():
 
 #Resumo do inventário com total de itens diferentes, total geral de unidades, lista dos tipos existentes
 def resume_iventory():
-    print("\n===RESUMO INVENTÁRIO===\n")
+    while True:
+        clear()
+        header("RESUMO INVENTÁRIO")
 
-    if not inventario:
-        print("Inventário vazio.")
-    else:
-        for item in inventario:
-            print(f"Item: {item['nome']}")
-            print(f"Tipo: {item['tipo']}")
-            print(f"Quantidade: {item['quantidade']}")
-            print("-" * 25)
+        if not inventario:
+            print("Inventário vazio.\n")
+            pause()
+            return
+        else:
+            for item in inventario:
+                print(f"Item: {item['nome']}")
+                print(f"Tipo: {item['tipo']}")
+                print(f"Quantidade: {item['quantidade']}")
+                print("-" * 25)
+            pause()
+            return
 
 #Salva o inventário
 def save_inventory():
     with open("inventario.json", "w", encoding="utf-8") as arquivo:
         json.dump(inventario, arquivo, ensure_ascii=False, indent=4)
+
+    clear()
+    print("Inventário Salvo...\n")
+    pause()
 
 #Menu de Interação
 def menu():
