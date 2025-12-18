@@ -1,6 +1,6 @@
 #Gerenciador de Inventário de RPG
 
-#Biblioteca para permitir o salvamento do inventário
+#Biblioteca para permitir o salvamento do inventário e permitir comandos do sistema
 import json
 import os
 
@@ -102,6 +102,7 @@ itens = {
 #Inventário do jogo
 inventario = []
 
+#Função para definir o titulo permanente de "Abas"
 def header(titulo):
     print(f"==={titulo}===\n")
 
@@ -109,6 +110,7 @@ def header(titulo):
 def clear():
     os.system('cls' if os.name == 'nt' else clear)
 
+#Espera o usuário confirmar antes de limpar o terminal
 def pause(msg = "Pressione ENTER para continuar..."):
     input(msg)
 
@@ -146,21 +148,23 @@ def qntd_itens(name_item):
     while True:
         clear()
         header("ADIÇÃO DE ITENS")
+
         print(f"Item selecionado: {name_item}")
         print(f"Tipo de item: {category_itens(name_item)}")
-        qntd_item = int(input("Quantidade: "))
+
+        qntd_item = int(input("Quantidade: +"))
         qntd_atual = check_qntd_atual(name_item)
 
         #Verifica se o inventário já está cheio
         if qntd_atual >= MAX:
-            print(f"Seu inventário já atingiu o máximo de 50 {name_item}.\n")
-            input("\nPressione ENTER para continuar...")
+            print(f"Inventário Cheio!\n")
+            pause()
             return 0
         
         #Trata se a quantidade é válida
         if qntd_item < 1:
             print("Quantidade inválida!\n")
-            input("Pressione ENTER para continuar...")
+            pause()
             continue
         
         #Calcula o espaço livre no inventário
@@ -169,19 +173,18 @@ def qntd_itens(name_item):
         #Caso a quantidade de item adicionado seja maio que o espaço livre o programa so adiciona quanto cabe
         if qntd_item > free_space:
             print(f"Só há espaço para {free_space} {name_item}.")
-            print(f"Foram adicionado(s) {free_space} {name_item}.")
-            input("\nPressione ENTER para continuar...")
+            print(f"+{free_space} {name_item} adicionad@(s) ao inventário.")
+            pause()
             return free_space
         
         else:
-            print(f"Foram adicionado(s) {qntd_item} {name_item} no invenetário.")
-            input("\nPressione ENTER para continuar...")
+            print(f"+{qntd_item} {name_item} adicionad@(s) no inventário.")
+            pause()
         
         return qntd_item
     
 #Adiciona Itens no inventário
 def add_item():
-    
 
     while True:
         clear()
@@ -195,15 +198,13 @@ def add_item():
     for item in inventario:
         if item["nome"].lower() == name_item:
             print("\nEsse item já está no seu iventário.")
+            pause()
             
             qntd_item = qntd_itens(name_item)
             item["quantidade"] += qntd_item
 
-            if qntd_item != 0:
-                print(f"Quantidade atualizada! Você tem {item['quantidade']} {item['nome']}.\n")
             return
 
-    
     #Categoriza o item automaticamente. 
     type_item = category_itens(name_item)
     if type_item is None:
@@ -223,32 +224,48 @@ def add_item():
 
 #Remove Itens do inventário    
 def remove_item():
-    print("\n===REMOÇÃO DE ITENS===")
+    while True:
+        clear()
+        header("REMOÇÃO DE ITENS")
 
-    name_item = input("Digite o nome do item que deseja remover: ").strip().lower()
+        name_item = input("Digite o nome do item que deseja remover: ").strip().lower()
 
-    for item in inventario:
-        if item["nome"].lower() == name_item:
-            while True:
-                qntd_itens = int(input("Digite a quantidade que deseja remover: "))
+        for item in inventario:
+            if item["nome"].lower() == name_item:
+                while True:
+                    clear()
+                    header("REMOÇÃO DE ITENS")
 
-                if qntd_itens < 1:
-                    print("Quantidade Inválida!\n")
+                    print(f"Item selecionado: {name_item}")
+                    print(f"Tipo de item: {category_itens(name_item)}")
+                    qntd_itens = int(input("Quantidade: -"))
+
+                    if qntd_itens < 1:
+                        print("Quantidade Inválida!\n")
+                        pause()
+                    else:
+                        break
+                
+                qntd_antiga = item["quantidade"]
+                item["quantidade"] -= qntd_itens
+
+                if item["quantidade"] <= 0:
+                    inventario.remove(item)
+                    print(f"Só existe {qntd_antiga} {name_item} no inventário")
+                    print(f"-{qntd_antiga} removid@(s) do inventário")
+                    print(f"{item['nome']} foi removido do inventário.\n")
+                    pause()
                 else:
-                    break
-            
-            item["quantidade"] -= qntd_itens
+                    print(f"-{qntd_itens} {name_item} removid@(s) do inventário")
+                    print(f"{item['quantidade']} {item['nome']} restantes")
+                    pause()
 
-            if item["quantidade"] <= 0:
-                inventario.remove(item)
-                print(f"{item['nome']} foi removido do inventário.\n")
-            else:
-                print(f"Agora você tem {item['quantidade']} {item['nome']}\n")
-            
-            return
+                return
 
-    else:
-        print("Esse item não existe no seu inventário!\n")
+        else:
+            print("Esse item não existe no seu inventário!\n")
+            pause()
+            continue
 
 #Consulta itens do jogo
 def consult_item():
