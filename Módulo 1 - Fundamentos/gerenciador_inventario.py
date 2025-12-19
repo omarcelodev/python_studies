@@ -108,7 +108,7 @@ def header(titulo):
 
 #Limpa a tela do terminal
 def clear():
-    os.system('cls' if os.name == 'nt' else clear)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 #Espera o usuário confirmar antes de limpar o terminal
 def pause(msg = "Pressione ENTER para continuar..."):
