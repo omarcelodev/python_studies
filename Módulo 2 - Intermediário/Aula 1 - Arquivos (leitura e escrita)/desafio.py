@@ -1,13 +1,11 @@
 #Mini Log
-
-import time
 from datetime import datetime
 
 def log():
     with open("log.txt", "a") as file:
-        file.write(f"Programa executado em: {date()}\n")
+        file.write(f"Programa executado em: {get_datetime()}\n")
 
-def date():
+def get_datetime():
     now = datetime.now()
     day = now.day
     month = now.month
