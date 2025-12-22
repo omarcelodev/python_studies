@@ -10,52 +10,63 @@ def verify_file_exist():
     try:
         with open("names.txt", "r") as file:
             file.read()
-        return True
+            return True
 
     except FileNotFoundError:
-        if input("Esse Arquivo não existe. Deseja cria-lo?(s/n)").lower() == 's':
+        choice = input("Esse Arquivo não existe. Deseja cria-lo?(s/n)").lower()
+
+        if choice == 's':
             with open("names.txt", "x") as file:
                 file.write("=== CADASTRO DE NOMES: ===\n")
+
             print("Arquivo criado com sucesso!")
+            return True
+        
+        return False
 
 def verify_names(name):
-    with open("names.txt", "r") as file:
-        for line in file:
-            if name == line.strip():
-                return True
-    return False
+    try:
+        with open("names.txt", "r") as file:
+            for line in file:
+                if name == line.strip():
+                    return True
+        return False
+    
+    except FileNotFoundError:
+        return False
 
 def register_names():
 
-    verify_file_exist()
-
-    if verify_file_exist() == True:
-        while True:
-            clear()
-            print("=== CADASTRO DE NOMES ===\n")
-
-            name = input("Digite o nome para cadastro: ").lower()
+    if not verify_file_exist():
+        return
     
-            if verify_names(name) == True:
-                print("Esse nome já está cadastrado\n")
-                pause()
-                continue
+    while True:
+        clear()
+        print("=== CADASTRO DE NOMES ===\n")
+
+        name = input("Digite o nome para cadastro: ").lower()
                 
-            if name == "":
-                print("O campo nome não pode estar vazio\n")
-                pause()
-                continue
-
-            with open("names.txt", "a") as file:
-                file.write(f"{name}\n")
-                print(f"\n{name} adicionado(a) com sucesso")
-            print("Salvando Arquivo...\n")
-
+        if name == "":
+            print("O campo nome não pode estar vazio\n")
             pause()
-            clear()
+            continue
 
-            print("=== CADASTRO DE NOMES ===\n")
-            if input("Deseja adicionar mais um cadastro?(s/n): ") == 'n':
-                break
+        if verify_names(name) == True:
+            print("Esse nome já está cadastrado\n")
+            pause()
+            continue
+
+        with open("names.txt", "a") as file:
+            file.write(f"{name}\n")
+            print(f"\n{name} adicionado(a) com sucesso")
+            
+        print("Salvando Arquivo...\n")
+
+        pause()
+        clear()
+
+        print("=== CADASTRO DE NOMES ===\n")
+        if input("Deseja adicionar mais um cadastro?(s/n): ").lower() == 'n':
+            break
         
 register_names()
