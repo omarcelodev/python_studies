@@ -24,3 +24,10 @@ try:
 except FileNotFoundError: #-> Erro específico é melhor que erro genérico
     print("Arquivo não encontrado.")
 
+#Tipos comuns de erros
+"""
+FileNotFoundError -> Arquivo não encontrado
+ValueError -> Tipo inválido(ex: int("abc"))
+ZeroDivisionError -> Divisão por zero
+TypeError -> tipos incompatíveis
+"""
