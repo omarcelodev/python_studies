@@ -12,3 +12,13 @@ def contar_ate(n):
 # Uso
 for num in contar_ate(5):
     print(num)
+
+"""
+O que o yield faz:
+-pausa a função
+-salva o estado
+-devolve um valor
+-continua de onde parou
+
+É como um checkpoint automático
+"""
