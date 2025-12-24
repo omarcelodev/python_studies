@@ -8,8 +8,6 @@ with open("names.txt") as f:
 
 #jeito profissional
 def ler_linhas(caminho):
-    with open("names.txt") as f:
+    with open(caminho) as f:
         for linha in f:
             yield linha.strip()
-
-ler_linhas()
