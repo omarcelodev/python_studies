@@ -1,3 +1,5 @@
+# Exercicios de lambda
+
 def ex01():
     dobro = lambda x: x * 2
     number = int(input("Digite um número: "))

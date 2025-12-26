@@ -5,3 +5,8 @@
 
 quadrado = lambda x: x ** 2
 print(quadrado(5))
+
+#Equivale a
+
+def quadrado(x):
+    return x ** 2

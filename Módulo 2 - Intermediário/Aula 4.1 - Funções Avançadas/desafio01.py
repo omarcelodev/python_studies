@@ -1,3 +1,5 @@
+#Desafios ed criação de lambda
+
 def desafio01():
     palavras =["python", "c", "java", "javascript", "go"]
     ordenadas = sorted(palavras, key= lambda x: len(x))
