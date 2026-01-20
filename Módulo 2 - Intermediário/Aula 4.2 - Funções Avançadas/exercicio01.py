@@ -1,11 +1,19 @@
 #Exercicios de *args
-
-def media(*args):
-    soma = sum(args) 
-    numeros = args
+def ex1():
+    def media(*args):
+        soma = sum(args) 
     
-    media = soma / numeros
+        media = soma / len(args)
 
-    return media
+        return media
 
-print(media(1, 2, 3, 4, 5, 6))
+    print(media(1, 2, 3, 4, 5, 6))
+
+def ex2():
+    def argumentos(*args):
+        for i in args:
+            print(i)
+       
+    argumentos(1, 2, 3, 4, 5, 6)
+
+ex2()
