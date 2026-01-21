@@ -1,9 +1,9 @@
 def verificar_zero(func):
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         if 0 in args:
             print("Erro: zero não permitido")
-            return 
-        return func(*args)
+            return None
+        return func(*args, **kwargs)
     return wrapper
 
 @verificar_zero
