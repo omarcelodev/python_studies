@@ -1,14 +1,14 @@
-def externa():
+def acumulador():
     total = 0
 
-    def interna(x):
+    def soma(x):
         nonlocal total
         total += x
 
         return total
-    return interna
+    return soma
 
-soma = externa()
+soma = acumulador()
 
 print(soma(1))
 print(soma(1))

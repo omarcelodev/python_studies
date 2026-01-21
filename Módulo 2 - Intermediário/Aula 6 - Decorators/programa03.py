@@ -7,7 +7,6 @@ def decorator(func):
         print("Antes")
         resultado = func(*args, **kwargs)
         print("Depois")
-
         return resultado
     return wrapper
 

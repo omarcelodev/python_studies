@@ -15,3 +15,6 @@ def externa():
 
 func = externa()
 print(func())
+
+# A função externa() já terminou
+# Mesmo assim, interna() ainda conhece x

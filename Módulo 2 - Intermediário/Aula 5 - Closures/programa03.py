@@ -12,6 +12,6 @@ def contador():
 
 cont = contador()
 
-print(cont(3))
+print(cont())
 print(cont())
 print(cont())

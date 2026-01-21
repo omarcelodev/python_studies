@@ -1,4 +1,5 @@
-"""def function():
+"""
+def function():
     def execute(x):
         mensagem = x
 
