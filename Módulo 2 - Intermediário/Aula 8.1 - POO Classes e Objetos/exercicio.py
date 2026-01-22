@@ -1,9 +1,9 @@
-class Cachoro:
+class Cachorro:
     def latir(self):
         return "Au au"
 
-cachorro_1 = Cachoro()
-cachorro_2 = Cachoro()
+cachorro_1 = Cachorro()
+cachorro_2 = Cachorro()
 
 cachorro_1.nome = "Maggie"
 cachorro_2.nome = "Magali"
