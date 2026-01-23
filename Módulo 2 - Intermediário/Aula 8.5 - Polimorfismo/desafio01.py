@@ -1,29 +1,29 @@
 from untils.funcoes_terminal import clear, pause
 
 #Classe base para os métodos de pagamento
-class Pagamentos():
+class Payment():
     def __init__(self, value): # Construtor que recebe o valor da compra
         self.value = value
 
     def calcular_total(self): # Método genérico que será sobrescrito pelas classes filhas
         return self.value
 
-class Pix(Pagamentos): 
+class Pix(Payment): 
     def calcular_total(self):
         return self.value * 0.95 #5% de desconto
 
-class Cartao(Pagamentos):
+class Card(Payment):
     def calcular_total(self):
         return self.value * 1.10 #10% de juros
 
-class Boleto(Pagamentos):
+class Boleto(Payment):
     def calcular_total(self):
         return self.value * 0.97 #3% de desconto
 
 #Dicionário para mapear as opções do usuário para as classes de pagamento
 payment_methods = {
     1: Pix,
-    2: Cartao,
+    2: Card,
     3: Boleto
 }
 
@@ -94,7 +94,12 @@ def main():
 
         value = get_value(chose) #Pega o valor correto digitado pelo usuário
         payment = payment_class(value) #Cria o objeto da classe de pagamento escolhida
-        print(payment.calcular_total()) #Chama o método pagar do objeto criado
+
+        clear()
+        print(f"=== RESUMO DA COMPRA ===")
+        print(f"Forma de pagamento: {payment_class.__name__}")
+        print(f"Valor da Compra: R${value:.2f}")
+        print(f"Valor Final: R${payment.calcular_total():.2f}") #Chama o método pagar do objeto criado
         pause()
 
 main()
