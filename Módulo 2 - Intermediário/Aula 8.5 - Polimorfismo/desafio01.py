@@ -103,7 +103,3 @@ def main():
         pause()
 
 main()
-
-
-
-#Detalhes: Formatar o impressão dos valores finais
