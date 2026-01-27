@@ -40,4 +40,7 @@ def pagamento_factory(chose):
 
 pagamento = pagamento_factory(chose)
 print(pagamento.pagar(100))
-        
+
+
+# 3.Template Method
+#   - Quando todas as classes seguem o mesmo fluxo: Validar, Calcular, Formatar. Mas mudam um pedaço
